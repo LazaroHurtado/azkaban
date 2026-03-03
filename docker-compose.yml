@@ -1,0 +1,19 @@
+services:
+  sandbox:
+    build: .
+    container_name: azkaban-sandbox
+    platform: linux/amd64
+    stdin_open: true
+    tty: true
+    volumes:
+      # Projects directory — mount the parent so all projects are available
+      - ~/projects:/workspace
+      # Config file (read by entrypoint for tool installation)
+      - .:/workspace/azkaban
+      # CLI tool configs
+      - ./configs/copilot:/home/azkaban/.copilot
+      - ./configs/claude:/home/azkaban/.claude
+      # Azure CLI auth (reuse host credentials)
+      - ~/.azure:/home/azkaban/.azure
+    env_file:
+      - .env

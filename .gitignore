@@ -1,0 +1,24 @@
+# Build output
+/target/
+
+# Local config (contains machine-specific paths)
+config.yaml
+
+# Environment secrets
+.env
+
+# Session data
+.azkaban/
+
+# CLI tool runtime state (sessions, auth, caches, packages)
+configs/*
+
+# Editor
+.idea/
+*.swp
+*.swo
+
+
+# Added by cargo
+
+/target
