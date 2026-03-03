@@ -5,7 +5,7 @@ A Rust TUI for running agentic CLI tools inside a sandboxed Docker container, wi
 ## Features
 
 - **Sandboxed execution** — CLI tools run inside a Docker container so they can't damage your host system
-- **Dynamic CLI tool support** — define any CLI tool in `config.toml` with install commands and flags
+- **Dynamic CLI tool support** — define any CLI tool in `config.yaml` with install commands and flags
 - **Project management** — auto-discover projects via glob patterns or list them explicitly
 - **Git worktree support** — create, select, and delete worktrees per project
 - **Session tracking** — view past sessions per worktree with summaries and timestamps
@@ -29,33 +29,36 @@ docker compose up -d           # Start the sandbox container
 
 ## Configuration
 
-### config.toml
+### config.yaml
 
-```toml
-default_tool = "copilot"
-project_dirs = ["~/projects/*"]
-container_name = "azkaban-sandbox"
+```yaml
+default_tool: copilot
+container_name: azkaban-sandbox
 
-[[cli_tools]]
-name = "copilot"
-display_name = "GitHub Copilot"
-install_cmd = "npm install -g @github/copilot"
-cli_cmd = "copilot"
-flags = ["--yolo"]
+project_dirs:
+  - ~/projects/*
 
-[[cli_tools]]
-name = "claude"
-display_name = "Claude Code"
-install_cmd = "npm install -g @anthropic-ai/claude-code"
-cli_cmd = "claude"
-flags = ["--dangerously-skip-permissions"]
+cli_tools:
+  - name: copilot
+    display_name: GitHub Copilot
+    install_cmd: npm install -g @github/copilot
+    cli_cmd: copilot
+    flags:
+      - --yolo
 
-[[cli_tools]]
-name = "gemini"
-display_name = "Gemini CLI"
-install_cmd = "npm install -g @google/gemini-cli"
-cli_cmd = "gemini"
-flags = ["--yolo"]
+  - name: claude
+    display_name: Claude Code
+    install_cmd: npm install -g @anthropic-ai/claude-code
+    cli_cmd: claude
+    flags:
+      - --dangerously-skip-permissions
+
+  - name: gemini
+    display_name: Gemini CLI
+    install_cmd: npm install -g @google/gemini-cli
+    cli_cmd: gemini
+    flags:
+      - --yolo
 ```
 
 ### docker-compose.yml
@@ -103,7 +106,7 @@ GITHUB_TOKEN=ghp_...
 ```
 src/
 ├── main.rs       # Entry point, event loop, terminal setup
-├── config.rs     # Config parsing (./config.toml)
+├── config.rs     # Config parsing (./config.yaml)
 ├── worktree.rs   # Git worktree management
 ├── session.rs    # Session parsing + CLI tool command building
 ├── app.rs        # Application state machine
